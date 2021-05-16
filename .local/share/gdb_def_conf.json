@@ -1,0 +1,16 @@
+{
+    "configurations": {
+    "Launch debugger": {
+      "adapter": "vscode-cpptools",
+      "configuration": {
+        "name": "Debug",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "Debug/main",
+        "cwd": "${workspaceRoot}",
+        "externalConsole": true,
+        "MIMode": "gdb"
+      }
+    }
+    }
+  }
