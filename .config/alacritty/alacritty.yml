@@ -177,7 +177,7 @@ key_bindings:
   - { key: Plus,      mods: Control,       action: IncreaseFontSize            }
   - { key: Minus,     mods: Control,       action: DecreaseFontSize            }
   - { key: Minus,     mods: Control,       action: DecreaseFontSize            }
-  - { key: F11,       mods: None,          action: ToggleFullscreen            }
+  - { key: F11,       mods: Control,       action: ToggleFullscreen            }
   - { key: Paste,     mods: None,          action: Paste                       }
   - { key: Copy,      mods: None,          action: Copy                        }
   - { key: L,         mods: Control,       action: ClearLogNotice              }

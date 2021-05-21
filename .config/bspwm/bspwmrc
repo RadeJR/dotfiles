@@ -7,7 +7,7 @@ bspc monitor -d 1 2 3 4 5 6 7 8 9
 bspc config border_width         2
 bspc config window_gap          12
 
-bspc config split_ratio          0.52
+bspc config split_ratio          0.5
 bspc config borderless_monocle   true
 bspc config gapless_monocle      true
 bspc config focus_follows_pointer true
@@ -22,7 +22,11 @@ bspc rule -a Kupfer.py focus=on
 bspc rule -a Screenkey manage=off
 bspc rule -a Zathura state=tiled
 bspc rule -a firefox desktop='^1' state=tiled follow=on
+bspc rule -a discord desktop='^5' state=tiled
+bspc rule -a Scratchterm sticky=on state=floating hidden=on
+bspc rule -a Cwdterm sticky=on state=floating
 
+alacritty --class "scratchterm","Scratchterm" &
 picom --experimental-backends &
 exec /home/rade/.config/polybar/launch.sh &
 [ ! -s ~/.config/mpd/pid ] && mpd
@@ -30,3 +34,5 @@ exec /home/rade/.config/polybar/launch.sh &
 setbg &
 remaps &
 dunst &
+sleep 10 && pidof -s onedrive_tray || onedrive_tray &
+

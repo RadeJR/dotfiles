@@ -6,8 +6,14 @@
 super + Return
 	alacritty
 
-# program launcher
 super + shift + Return
+	scratchtermtoggle
+
+super + control + Return
+	alacritty --class "cwdterm","Cwdterm" --working-directory `xcwd`
+
+# program launcher
+super + d
 	dmenu_run -c -bw 2 -l 20 -g 4 -p 'Run: ' -nb '#11121d' -nf '#a9b1d6' -sb '#a9b1d6' -sf '#11121d'
 # make sxhkd reload its configuration files:
 super + Escape

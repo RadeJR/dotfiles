@@ -40,34 +40,61 @@ padding-left = 1
 padding-right = 0
 background = ${colors.background}
 foreground = ${colors.foreground}
-bottom = true
+bottom = false
 border-top-size = 7
 border-bottom-size = 7
 border-top-color = ${colors.background}
 border-bottom-color = ${colors.background}
 line-size = 3
 wm-restack = bspwm
-modules-left = round-left bspwm round-right
-modules-center = mpd
-modules-right =  pulseaudio cpu mem round-left time round-right  powermenu
+modules-left = round-left bspwm round-right mpd
+modules-center = round-left time round-right
+modules-right =  network pulseaudio cpu mem
 font-0 = Hack Nerd Font:style=Bold:pixelsize=11;3
 font-1 = JetBrainsMono Nerd Font:size=18;5
 font-2 = Material Design Icons:style=Bold:size=13;3
 font-3 = unifont:fontformat=truetype:size=13:antialias=true;
 
+[module/network]
+type = internal/network
+interface = enp0s3
+interval = 1.0
+; Available tags:
+;   <label-connected> (default)
+;   <ramp-signal>
+format-connected = <label-connected>
+; Available tags:
+;   <label-disconnected> (default)
+format-disconnected = <label-disconnected>
+; Available tags:
+;   <label-connected> (default)
+;   <label-packetloss>
+;   <animation-packetloss>
+format-packetloss = <animation-packetloss> <label-connected>
+; All labels support the following tokens:
+;   %ifname%    [wireless+wired]
+;   %local_ip%  [wireless+wired]
+;   %local_ip6% [wireless+wired]
+;   %essid%     [wireless]
+;   %signal%    [wireless]
+;   %upspeed%   [wireless+wired]
+;   %downspeed% [wireless+wired]
+;   %linkspeed% [wired]
+label-connected = " %downspeed:8%  %upspeed:8% "
+label-connected-foreground = ${colors.cyan}
+label-disconnected = not connected
+label-disconnected-foreground = #66ffffff
+animation-packetloss-0 = ⚠
+animation-packetloss-0-foreground = #ffa64c
+animation-packetloss-1 = 📶
+animation-packetloss-1-foreground = #000000
+animation-packetloss-framerate = 500
+
 [module/mpd]
 type = internal/mpd
-
-; Host where mpd is running (either ip or domain name)
-; Can also be the full path to a unix socket where mpd is running.
 host = 127.0.0.1
 port = 6600
-#password = mysecretpassword
-
-; Seconds to sleep between progressbar/song timer sync
-; Default: 1
 interval = 2
-
 ; Available tags:
 ;   <label-song> (default)
 ;   <label-time>
@@ -86,15 +113,15 @@ interval = 2
 ;   <icon-next>
 ;   <icon-seekb>
 ;   <icon-seekf>
-format-online = <icon-prev> <icon-stop> <toggle> <icon-next>  <icon-repeat> <icon-random> <label-time> <label-song>
+format-online = <icon-prev> <icon-stop> <toggle> <icon-next> <label-time>
 ;format-playing = ${self.format-online}
 ;format-paused = ${self.format-online}
-;format-stopped = ${self.format-online}
+format-stopped = <icon-prev> <toggle> <icon-next>
 
 ; Available tags:
 ;   <label-offline>
 ; Default: ""
-;format-offline = <label-offline>
+format-offline = <label-offline>
 
 ; Available tokens:
 ;   %artist%
@@ -109,7 +136,8 @@ label-song = 𝄞 %artist% - %title%
 ;   %elapsed%
 ;   %total%
 ; Default: %elapsed% / %total%
-;label-time = %elapsed% / %total%
+label-time = "%elapsed% / %total% "
+label-time-foreground = ${colors.green}
 
 ; Available tokens:
 ;   None
@@ -117,10 +145,15 @@ label-offline = 🎜 mpd is offline
 
 ; Only applies if <icon-X> is used
 icon-play = ⏵
+icon-play-foreground = ${colors.cyan}
 icon-pause = ⏸
+icon-pause-foreground = ${colors.cyan}
 icon-stop = ⏹
-icon-prev = ⏮
-icon-next = ⏭
+icon-stop-foreground = ${colors.purple}
+icon-prev = "  ⏮"
+icon-prev-foreground = ${colors.red}
+icon-next = "⏭ "
+icon-next-foreground = ${colors.red}
 icon-seekb = ⏪
 icon-seekf = ⏩
 icon-random = 🔀
@@ -175,8 +208,8 @@ ws-icon-0 = 1;%{F#ff9b93}
 ws-icon-1 = 2;%{F#4BB1A7}
 ws-icon-2 = 3;%{F#4BB1A7}
 ws-icon-3 = 4;%{F#4BB1A7}
-ws-icon-4 = 5;%{F#A3BE8C}阮
-ws-icon-5 = 6;%{F#81A1C1}ﭮ
+ws-icon-4 = 5;%{F#81A1C1}ﭮ
+ws-icon-5 = 6;%{F#A3BE8C}阮
 ws-icon-6 = 7;%{F#72C7D1}金
 ws-icon-7 = 8;%{F#B888E2}
 ws-icon-8 = 9;%{F#C7C18B}
@@ -207,15 +240,15 @@ type = internal/pulseaudio
 format-volume = <ramp-volume> <label-volume>
 format-muted = <label-muted>
 label-volume = "%percentage%% "
-label-muted = " "
-label-volume-foreground = ${colors.foreground}
-format-muted-foreground = ${colors.cyan}
+label-muted = "  "
+label-volume-foreground = ${colors.green}
+format-muted-foreground = ${colors.green}
 format-muted-padding = 1
 format-muted-background = ${colors.background}
-ramp-volume-0 = 
-ramp-volume-1 = 
-ramp-volume-2 = 
-ramp-volume-foreground = ${colors.cyan}
+ramp-volume-0 = " "
+ramp-volume-1 = " "
+ramp-volume-2 = " "
+ramp-volume-foreground = ${colors.green}
 ramp-headphones-0 = 
 ramp-headphones-foreground = ${colors.cyan}
 format-padding = 1
@@ -225,17 +258,19 @@ type = internal/date
 interval = 60
 format = <label>
 format-background = ${colors.content-background}
-date = %a, %b %d %H:%M%{F-}
-time-alt = %a, %b %d%{F-}
+time = %H:%M
+date-alt = %a, %b %d%
+time-alt = " %H:%M"
 label = %date%%time%
 format-padding = 1
 
 [module/mem]
 type = custom/script
-exec = free -h | awk '/^Mem:/ {print $3}' | sed "s/Gi//g;s/$/G/"
+exec = free -h | awk '/^Mem:/ {print $3}' | sed "s/Gi/G/g;s/Mi/M/"
 format = <label>
-format-prefix = " "
+format-prefix = "  "
 label = "%output%"
+label-foreground = ${colors.orange}
 format-prefix-foreground = ${colors.orange}
 format-padding = 1
 
@@ -243,17 +278,58 @@ format-padding = 1
 type = internal/cpu
 interval = 2.5
 format = <label>
-format-prefix = " "
+format-prefix = "  "
 label = "%percentage:02%%"
+label-foreground = ${colors.purple}
 format-prefix-foreground = ${colors.purple}
 format-padding = 0
 
 [module/powermenu]
-type = custom/text
-content =""
-content-padding = 1
-click-left = bspc quit &
-content-foreground =  ${colors.red}
+type = custom/menu
+
+; If true, <label-toggle> will be to the left of the menu items (default).
+; If false, it will be on the right of all the items.
+expand-right = false
+format-spacing = 1
+
+; "menu-LEVEL-N" has the same properties as "label-NAME" with
+; the additional "exec" property
+;
+; Commands will be executed using "/bin/sh -c $COMMAND"
+
+menu-0-0 = " shutdown"
+menu-0-0-foreground = ${colors.red}
+menu-0-0-exec = #powermenu.open.1
+menu-0-1 = reboot
+menu-0-1-foreground = ${colors.red}
+menu-0-1-exec = #powermenu.open.2
+
+menu-1-0 = " cancel"
+menu-1-1 = shutdown
+menu-1-1-foreground = ${colors.red}
+menu-1-1-exec = sudo -A shutdown -h now
+
+menu-2-0 = " reboot"
+menu-2-0-exec = sudo reboot
+menu-2-0-foreground = ${colors.red}
+menu-2-1 = cancel
+
+; Available tags:
+;   <label-toggle> (default) - gets replaced with <label-(open|close)>
+;   <menu> (default)
+; If expand-right is true, the default will be "<label-toggle><menu>" and the
+; other way around otherwise.
+; Note that if you use <label-toggle> you must also include
+; the definition for <label-open>
+;format = <label-toggle><menu>
+
+label-open = "  "
+label-open-foreground = ${colors.red}
+label-close = " "
+
+; Optional item separator
+; Default: none
+;label-separator = |
 
 [module/wlan]
 type = internal/network
