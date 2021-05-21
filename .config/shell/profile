@@ -7,7 +7,7 @@
 
 # Adds `~/.local/bin` to $PATH
 #export PATH="$PATH:${$(find ~/.local/bin -type d -printf %p:)%%:}"
-export PATH="/home/rade/.local/bin/:$PATH"
+export PATH="/home/rade/.local/bin/:/home/rade/.local/bin/statusbar/:$PATH"
 
 # unsetopt PROMPT_SP
 

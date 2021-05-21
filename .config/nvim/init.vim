@@ -44,7 +44,8 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 
-Plug 'bling/vim-airline'
+Plug 'hoob3rt/lualine.nvim'
+Plug 'ryanoasis/vim-devicons'
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -69,6 +70,7 @@ Plug 'honza/vim-snippets'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'simrat39/symbols-outline.nvim'
 Plug 'cohama/lexima.vim'
+Plug 'lifepillar/vim-gruvbox8'
 
 call plug#end()
 "}}}
@@ -86,12 +88,18 @@ call plug#end()
 
     let g:vimwiki_ext2syntax = {'.Rmd': 'markdown', '.rmd': 'markdown','.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
     let g:vimwiki_list = [{'path': '~/OneDrive/vimwiki', 'syntax': 'markdown', 'ext': '.md'}]
+lua << EOF
+    require('lualine').setup {
+        options = {theme = 'palenight'}
+        }
 
-    set termguicolors
+EOF
+"    set termguicolors
+    set t_Co=16
     let g:tokyonight_style = 'night' " available: night, storm
     let g:tokyonight_enable_italic = 1
-    set bg=dark
-    colorscheme tokyonight
+"    set bg=dark
+    colorscheme gruvbox8
 "}}}
 " KEYBINDIGNS {{{
 map Q gq
