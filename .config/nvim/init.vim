@@ -94,12 +94,13 @@ lua << EOF
         }
 
 EOF
-"    set termguicolors
-    set t_Co=16
+    set termguicolors
+"    set t_Co=16
     let g:tokyonight_style = 'night' " available: night, storm
     let g:tokyonight_enable_italic = 1
 "    set bg=dark
-    colorscheme gruvbox8
+"    colorscheme gruvbox8
+    colorscheme tokyonight
 "}}}
 " KEYBINDIGNS {{{
 map Q gq
