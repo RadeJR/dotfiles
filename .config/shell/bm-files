@@ -16,6 +16,4 @@ cfmb	${XDG_CONFIG_HOME:-$HOME/.config}/ncmpcpp/bindings	# ncmpcpp (music player)
 cfmc	${XDG_CONFIG_HOME:-$HOME/.config}/ncmpcpp/config	# ncmpcpp (music player) config
 cfl	${XDG_CONFIG_HOME:-$HOME/.config}/lf/lfrc		# lf (file browser) config
 cfX	${XDG_CONFIG_HOME:-$HOME/.config}/sxiv/exec/key-handler	# sxiv (image viewer) key/script handler
-cfb ${XDG_CONFIG_HOME:-$HOME/.config}/bspwm/bspwmrc
-cfk ${XDG_CONFIG_HOME:-$HOME/.config}/sxhkd/sxhkdrc
-cfP ${XDG_CONFIG_HOME:-$HOME/.config}/polybar/config
+cfq ${XDG_CONFIG_HOME:-$HOME/.config}/qtile/config.py
