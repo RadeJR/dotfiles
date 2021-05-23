@@ -46,18 +46,18 @@ Plug 'tpope/vim-commentary'
 
 Plug 'hoob3rt/lualine.nvim'
 Plug 'ryanoasis/vim-devicons'
+Plug 'ghifarit53/tokyonight-vim'
+Plug 'lifepillar/vim-gruvbox8'
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 Plug 'cdelledonne/vim-cmake'
 Plug 'vimwiki/vimwiki'
-Plug 'ghifarit53/tokyonight-vim'
 Plug 'antoinemadec/FixCursorHold.nvim'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
-Plug 'rhysd/vim-clang-format'
 Plug 'kana/vim-operator-user'
 Plug 'puremourning/vimspector', {
   \ 'do': 'python3 install_gadget.py --enable-cpp'
@@ -70,15 +70,19 @@ Plug 'honza/vim-snippets'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'simrat39/symbols-outline.nvim'
 Plug 'cohama/lexima.vim'
-Plug 'lifepillar/vim-gruvbox8'
+
+Plug 'google/vim-maktaba'
+Plug 'google/vim-codefmt'
+Plug 'google/vim-glaive'
 
 call plug#end()
+call glaive#Install()
+
 "}}}
 " SETTINGS {{{
     let mapleader =" "
     let g:fzf_layout = { 'down': '40%' }
     let g:cmake_link_compile_commands = 1
-    let g:clang_format#auto_format = 1
     let g:vimspector_enable_mappings = 'HUMAN'
     let g:vimwiki_markdown_link_ext = 1
     let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
@@ -124,8 +128,7 @@ nnoremap <leader>ph :Helptags<CR>
 nnoremap <leader>cg :CMakeGenerate<cr>
 nnoremap <leader>cb :CMakeBuild<cr>
 nnoremap <leader>cc :w! \| !compiler "<c-r>%"<CR>
-nnoremap <leader>cf :<C-u>ClangFormat<CR>
-vnoremap <leader>cf :<C-u>ClangFormat<CR>
+nnoremap <leader>cf :<C-u>FormatCode<CR>
 nnoremap <leader>co :SymbolsOutline<CR>
 " DEBUGGER
 nnoremap <leader>vr :VimspectorReset<CR>
@@ -143,6 +146,8 @@ nnoremap <Leader><CR> :so ~/.config/nvim/init.vim<CR>
     augroup MYGROUP
         autocmd!
         autocmd BufWritePost bm-files,bm-dirs !shortcuts
+        autocmd FileType c,cpp,proto,javascript,arduino AutoFormatBuffer clang-format
+        autocmd FileType python AutoFormatBuffer autopep8
     augroup END
 "}}}
 " LSP  {{{
@@ -155,7 +160,7 @@ local on_attach = function(client, bufnr)
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
   -- Mappings.
-  local opts = { noremap=true, silent=true }
+  local opts = { noremap=true, silent=false }
 
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
@@ -171,11 +176,11 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  buf_set_keymap("n", "<space>ff", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+  buf_set_keymap("n", "<leader>ff", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 
 end
 
-local servers = { "clangd", "cmake", "bashls" }
+local servers = { "clangd", "cmake", "bashls", "pyright" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup { on_attach = on_attach }
 end
